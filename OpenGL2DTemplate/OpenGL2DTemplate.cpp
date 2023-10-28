@@ -43,8 +43,7 @@ double yend = 575;
 
 double angleBird = 0;
 
-//this is the method used to print text in OpenGL
-//there are three parameters,
+//Print Text
 //the first two are the coordinates where the text is display,
 //the third coordinate is the string containing the text to display
 void print(int x, int y, char* string)
@@ -60,7 +59,7 @@ void print(int x, int y, char* string)
 	//loop to display character by character
 	for (i = 0; i < len; i++)
 	{
-		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, string[i]);
+		glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, string[i]);
 	}
 }
 
@@ -120,6 +119,7 @@ void drawPlayer() {
 	glPopMatrix();
 }
 
+//////////////////////////////////////////////////////////////////////////////
 // Structure to represent GameObjects
 struct GameObject {
 	float x;
@@ -306,6 +306,7 @@ struct Point {
 };
 
 Point obstaclePoints[10];
+Point GameObjectsPoints[26];
 
 // Function to check if a point is within specified ranges
 bool isWithinRanges(int x, int y) {
@@ -313,6 +314,12 @@ bool isWithinRanges(int x, int y) {
 	if ((470 <= x && x <= 530 && 270 <= y && y <= 330) ||
 		(0 <= x && x <= 120 && 0 <= y && y <= 150)) {
 		return true;
+	}
+	for (int i = 0; i < 26; i++) {
+		if (x <= GameObjectsPoints[i].x + 35 && x>= GameObjectsPoints[i].x - 35 
+		   && y <= GameObjectsPoints[i].y + 35 && y >= GameObjectsPoints[i].y - 35) {
+			return true;
+		}
 	}
 	return false;
 }
@@ -327,6 +334,10 @@ void initObstacles() {
 		} while (isWithinRanges(obstacles[i].x, obstacles[i].y));
 		obstaclePoints[i].x = obstacles[i].x;
 		obstaclePoints[i].y = obstacles[i].y;
+		GameObjectsPoints[i].x = obstacles[i].x;
+		GameObjectsPoints[i].y = obstacles[i].y;
+		printf("X is: %d\n", obstaclePoints[i].x);
+		printf("Y is: %d\n", obstaclePoints[i].y);
 	}
 }
 
@@ -338,6 +349,8 @@ void initCollectables() {
 			collectables[i].y = rand() % 480 + 30;  // Random y position
 			collectables[i].size = 20;
 		} while (isWithinRanges(collectables[i].x, collectables[i].y));
+		GameObjectsPoints[i + 10].x = collectables[i].x;
+		GameObjectsPoints[i + 10].y = collectables[i].y;
 	}
 }
 
@@ -349,6 +362,8 @@ void initPowerUps1() {
 			powerUps1[i].y = rand() % 480 + 30;  // Random y position
 			powerUps1[i].size = 20;
 		} while (isWithinRanges(powerUps1[i].x, powerUps1[i].y));
+		GameObjectsPoints[i + 20].x = powerUps1[i].x;
+		GameObjectsPoints[i + 20].y = powerUps1[i].y;
 	}
 }
 
@@ -360,8 +375,13 @@ void initPowerUps2() {
 			powerUps2[i].y = rand() % 480 + 30;  // Random y position
 			powerUps2[i].size = 20;
 		} while (isWithinRanges(powerUps2[i].x, powerUps2[i].y));
+		GameObjectsPoints[i + 23].x = powerUps2[i].x;
+		GameObjectsPoints[i + 23].y = powerUps2[i].y;
 	}
 }
+
+//////////////////////////////////////////////////////////////////////////////
+
 
 //DRAW Goal
 void drawGoal() {
