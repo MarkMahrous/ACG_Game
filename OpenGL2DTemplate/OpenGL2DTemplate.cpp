@@ -778,7 +778,11 @@ void move(int k, int x, int y)// keyboard special key function takes 3 parameter
 	for (int i = 0; i < 10; i++) {
 		if (moveX + 25 >= obstacles[i].x && moveX <= obstacles[i].x + obstacles[i].size &&
 			moveY + 25 >= obstacles[i].y && moveY <= obstacles[i].y + obstacles[i].size) {
-			//handle collision with Obstacles
+			lives--;
+			//print lives to console
+			printf("Lives: %d\n", lives);
+			moveX = 500;
+			moveY = 300;
 		}
 	}
 
@@ -786,7 +790,10 @@ void move(int k, int x, int y)// keyboard special key function takes 3 parameter
 	for (int i = 0; i < 10; i++) {
 		if (moveX + 25 >= collectables[i].x && moveX <= collectables[i].x + collectables[i].size &&
 			moveY + 25 >= collectables[i].y && moveY <= collectables[i].y + collectables[i].size) {
-			//handle collision with Collectables
+			collectables[i].x = -500;
+			collectables[i].y = -500;
+			score += 1 * scoreInc;
+			printf("Score: %d\n", score);
 		}
 	}
 
@@ -794,7 +801,10 @@ void move(int k, int x, int y)// keyboard special key function takes 3 parameter
 	for (int i = 0; i < 3; i++) {
 		if (moveX + 25 >= powerUps1[i].x && moveX <= powerUps1[i].x + powerUps1[i].size &&
 			moveY + 25 >= powerUps1[i].y && moveY <= powerUps1[i].y + powerUps1[i].size) {
-			//handle collision with powerUps1
+			powerUps1[i].x = -500;
+			powerUps1[i].y = -500;
+			powerUp1 = 1;
+			powerUpTimer1 = 5;
 		}
 	}
 
@@ -802,19 +812,21 @@ void move(int k, int x, int y)// keyboard special key function takes 3 parameter
 	for (int i = 0; i < 3; i++) {
 		if (moveX + 25 >= powerUps2[i].x && moveX <= powerUps2[i].x + powerUps2[i].size &&
 			moveY + 25 >= powerUps2[i].y && moveY <= powerUps2[i].y + powerUps2[i].size) {
-			//handle collision with powerUps2
+			powerUps2[i].x = -500;
+			powerUps2[i].y = -500;
+			powerUp2 = 1;
+			powerUpTimer2 = 5;
 		}
 	}
 
 	// Check for collisions with goal
 	if (moveX < 70 && moveY < 90 && score >= 10) {
-		//handle collision with Goal
+		win = true;
 	}
 
 	direction = k;
 	glutPostRedisplay();
 }
-
 void main(int argc, char** argr) {
 	glutInit(&argc, argr);
 
