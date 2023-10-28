@@ -827,16 +827,109 @@ void move(int k, int x, int y)// keyboard special key function takes 3 parameter
 	direction = k;
 	glutPostRedisplay();
 }
-void main(int argc, char** argr) {
-	glutInit(&argc, argr);
 
-	glutInitWindowSize(1000, 600);
-	
-	glutCreateWindow("OpenGL - 2D Template");
-	glutDisplayFunc(Display);
+void timeFunc(int val)
+{
+	if (timer > 1) {
+		timer--;
+	}
+	else {
+		timer = 0;
+	}
+
+	if (powerUp1 == 1) {
+		scoreInc = 2;
+		if (powerUpTimer1 == 0) {
+			powerUp1 = 0;
+			scoreInc = 1;
+			powerUpTimer1 = 5;
+		}
+		else {
+			powerUpTimer1--;
+		}
+	}
+
+	if (powerUp2 == 1) {
+		for (int i = 0; i < 10; i++) {
+			obstacles[i].x = -500;
+			obstacles[i].y = -500;
+		}
+		if (powerUpTimer2 == 0) {
+			powerUp2 = 0;
+			for (int i = 0; i < 10; i++) {
+				obstacles[i].x = obstaclePoints[i].x;
+				obstacles[i].y = obstaclePoints[i].y;
+			}
+			powerUpTimer2 = 5;
+		}
+		else {
+			powerUpTimer2--;
+		}
+	}
+	glutPostRedisplay();
+	glutTimerFunc(1000, timeFunc, 0);//recall the time function after 1sec, pass a zero as an input
+}
+
+void timeFuncAnim(int val)
+{
+	if (scaleGoal < 2.1)
+		scaleGoal = 2.1;
+	else
+		scaleGoal = 2;
+	if (translatePowerUp == 10)
+		translatePowerUp = -10;
+	else
+		translatePowerUp = 10;
+	angleCollectable += 20;
+	anglePowerUp1 += 10;
+	anglePowerUp2 -= 10;
+	angleBird += 10;
+	if (change == 1) {
+		doorX += 0.1;
+		doorY += 0.1;
+		doorZ += 0.1;
+		if (doorX >= 1) {
+			change = 0;
+		}
+	}
+	if (change == 0) {
+		doorX -= 0.1;
+		doorY -= 0.1;
+		doorZ -= 0.1;
+		if (doorX <= 0) {
+			change = 1;
+		}
+	}
+	glutPostRedisplay();
+	glutTimerFunc(100, timeFuncAnim, 0);
+}
+
+
+// Main function
+int main(int argc, char** argr) {
+
+	glutInit(&argc, argr);
 	glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
+	glutInitWindowSize(1000, 600);
+	glutInitWindowPosition(100, 100);
+	glutCreateWindow("Control");
+	glutDisplayFunc(Display);
+	glutSpecialFunc(move);
+	glutTimerFunc(0, timeFunc, 0);
+	glutTimerFunc(0, timeFuncAnim, 0);
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	gluOrtho2D(0.0, 1000, 0.0, 600);
 
+	// Seed the random number generator with the current time
+	std::srand(static_cast<unsigned int>(std::time(nullptr)));
+
+	initObstacles();
+	initCollectables();
+	initPowerUps1();
+	initPowerUps2();
+
 	glutMainLoop();
+
+
+	return 0;
 }
