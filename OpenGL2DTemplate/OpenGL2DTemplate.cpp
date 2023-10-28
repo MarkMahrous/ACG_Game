@@ -739,6 +739,82 @@ void Display() {
 	glFlush();
 }
 
+// Keyboard special keys function
+void move(int k, int x, int y)// keyboard special key function takes 3 parameters
+// int k: is the special key pressed such as the keyboard arrows the f1,2,3 and so on
+{
+	if (lives != 0) {
+		if (k == GLUT_KEY_RIGHT) { //moving right
+			moveX += 10;
+			if (moveX > 970) {
+				lives--;
+				moveX -= 10;
+			}
+		}
+		if (k == GLUT_KEY_LEFT) { //moving left
+			moveX -= 10;
+			if (moveX < 30) {
+				lives--;
+				moveX += 10;
+			}
+		}
+		if (k == GLUT_KEY_UP) { //moving upwords
+			moveY += 10;
+			if (moveY > 510) {
+				lives--;
+				moveY -= 10;
+			}
+		}
+		if (k == GLUT_KEY_DOWN) { //moving downwords
+			moveY -= 10;
+			if (moveY < 30) {
+				lives--;
+				moveY += 10;
+			}
+		}
+	}
+
+	// Check for collisions with obstacles
+	for (int i = 0; i < 10; i++) {
+		if (moveX + 25 >= obstacles[i].x && moveX <= obstacles[i].x + obstacles[i].size &&
+			moveY + 25 >= obstacles[i].y && moveY <= obstacles[i].y + obstacles[i].size) {
+			//handle collision with Obstacles
+		}
+	}
+
+	// Check for collisions with collectables
+	for (int i = 0; i < 10; i++) {
+		if (moveX + 25 >= collectables[i].x && moveX <= collectables[i].x + collectables[i].size &&
+			moveY + 25 >= collectables[i].y && moveY <= collectables[i].y + collectables[i].size) {
+			//handle collision with Collectables
+		}
+	}
+
+	// Check for collisions with powerUps1
+	for (int i = 0; i < 3; i++) {
+		if (moveX + 25 >= powerUps1[i].x && moveX <= powerUps1[i].x + powerUps1[i].size &&
+			moveY + 25 >= powerUps1[i].y && moveY <= powerUps1[i].y + powerUps1[i].size) {
+			//handle collision with powerUps1
+		}
+	}
+
+	// Check for collisions with powerUps2
+	for (int i = 0; i < 3; i++) {
+		if (moveX + 25 >= powerUps2[i].x && moveX <= powerUps2[i].x + powerUps2[i].size &&
+			moveY + 25 >= powerUps2[i].y && moveY <= powerUps2[i].y + powerUps2[i].size) {
+			//handle collision with powerUps2
+		}
+	}
+
+	// Check for collisions with goal
+	if (moveX < 70 && moveY < 90 && score >= 10) {
+		//handle collision with Goal
+	}
+
+	direction = k;
+	glutPostRedisplay();
+}
+
 void main(int argc, char** argr) {
 	glutInit(&argc, argr);
 
