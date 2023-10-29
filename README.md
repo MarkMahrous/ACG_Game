@@ -31,6 +31,7 @@ ACG_Game is developed using C++ in Visual Studio and relies on the OpenGL librar
 Follow these steps to run ACG_Game:
 1. Set up your development environment with Visual Studio.
 2. Ensure you have the necessary OpenGL and glut.h libraries installed.
-3. Compile and run the game code, and you can start playing.
+3. Open the Game by running OpenGL2DTemplate.sln with Visual Studio.
+4. Compile and run the game code, and you can start playing.
 
 Have fun playing ACG_Game, where you'll need to avoid obstacles, collect collectables, use power-ups wisely, and reach the final goal to win the game!
